@@ -8,3 +8,5 @@ CMakeCache.txt
 
 # build
 gfx_test
+*.pbm
+*.png
