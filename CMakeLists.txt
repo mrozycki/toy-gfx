@@ -4,4 +4,5 @@ project(Graphics CXX)
 
 add_executable(gfx_test
     gfx/canvas.cpp
+    gfx/shapes.cpp
     main.cpp)
