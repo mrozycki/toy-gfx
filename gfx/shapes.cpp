@@ -61,19 +61,19 @@ void line2(canvas& canvas, int x1, int y1, int x2, int y2, color color) {
     }
 }
 
-void line(canvas& canvas, int x1, int y1, int x2, int y2, color color) {
-    double a = 1.0 * (y1 - y2) / (x1 - x2);
-    if (std::abs(a) < 1.0) {
-        if (x1 > x2) {
-            std::swap(x1, x2);
-            std::swap(y1, y2);
+void line(canvas& canvas, point a, point b, color color) {
+    double gradient = 1.0 * (a.y - b.y) / (a.x - b.x);
+    if (std::abs(gradient) < 1.0) {
+        if (a.x > b.x) {
+            std::swap(a.x, b.x);
+            std::swap(a.y, b.y);
         }
 
-        auto y = y1;
+        auto y = a.y;
         auto dy = 0.0;
-        for (auto i = x1; i <= x2; ++i) {
+        for (auto i = a.x; i <= b.x; ++i) {
             canvas.set_pixel(i, y, color);
-            dy += a;
+            dy += gradient;
             if (dy >= 1.0) {
                 dy -= 1;
                 y += 1;
@@ -83,15 +83,15 @@ void line(canvas& canvas, int x1, int y1, int x2, int y2, color color) {
             }
         }
     } else {
-        if (y1 > y2) {
-            std::swap(x1, x2);
-            std::swap(y1, y2);
+        if (a.y > b.y) {
+            std::swap(a.x, b.x);
+            std::swap(a.y, b.y);
         }
-        auto x = x1;
+        auto x = a.x;
         auto dx = 0.0;
-        for (auto i = y1; i <= y2; ++i) {
+        for (auto i = a.y; i <= b.y; ++i) {
             canvas.set_pixel(x, i, color);
-            dx += 1.0 / a;
+            dx += 1.0 / gradient;
             if (dx >= 1.0) {
                 dx -= 1;
                 x += 1;
@@ -101,6 +101,13 @@ void line(canvas& canvas, int x1, int y1, int x2, int y2, color color) {
             }
         }
     }
+}
+
+void polygon(canvas& canvas, std::vector<point> const& points, color color) {
+    for (std::size_t i = 0; i+1 < points.size(); ++i) {
+        line(canvas, points[i], points[i+1], color);
+    }
+    line(canvas, points[points.size()-1], points[0], color);
 }
 }
 }
