@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-namespace gfx {
+namespace gfx2d {
 enum class color {
     white, black
 };

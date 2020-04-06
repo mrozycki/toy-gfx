@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-namespace gfx {
+namespace gfx2d {
 namespace shapes {
 void rectangle(
         canvas& canvas,

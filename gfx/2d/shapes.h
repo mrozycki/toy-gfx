@@ -3,7 +3,7 @@
 #include "canvas.h"
 #include "point.h"
 
-namespace gfx {
+namespace gfx2d {
 namespace shapes {
 void rectangle(
     canvas& canvas,

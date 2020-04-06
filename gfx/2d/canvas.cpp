@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-namespace gfx {
+namespace gfx2d {
 canvas::canvas(std::size_t width, std::size_t height, color background)
     : width_(width)
     , height_(height)
