@@ -11,12 +11,27 @@
 #include "gfx/2d/shapes.h"
 
 namespace gfx3d {
+namespace {
+void rotate_y(point& p, double alpha) {
+    p.x = cos(alpha) * p.x + sin(alpha) * p.z;
+    p.z = cos(alpha) * p.z - sin(alpha) * p.x;
+}
+}
+
 void object::render(gfx2d::canvas& canvas) const {
     for (auto const& face : faces_) {
         gfx2d::shapes::polygon(canvas, {
             {static_cast<int>((face.a.x + 2) * 200), static_cast<int>((-face.a.y + 2) * 200)},
             {static_cast<int>((face.b.x + 2) * 200), static_cast<int>((-face.b.y + 2) * 200)},
             {static_cast<int>((face.c.x + 2) * 200), static_cast<int>((-face.c.y + 2) * 200)}});
+    }
+}
+
+void object::rotate_y(double alpha) {
+    for (auto& face : faces_) {
+        ::gfx3d::rotate_y(face.a, alpha);
+        ::gfx3d::rotate_y(face.b, alpha);
+        ::gfx3d::rotate_y(face.c, alpha);
     }
 }
 

@@ -17,6 +17,7 @@ public:
     object(std::vector<face> faces) : faces_(std::move(faces)) {}
 
     void render(gfx2d::canvas& canvas) const;
+    void rotate_y(double alpha);
 
 private:
     std::vector<face> faces_;
