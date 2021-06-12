@@ -109,5 +109,48 @@ void polygon(canvas& canvas, std::vector<point> const& points, color color) {
     }
     line(canvas, points[points.size()-1], points[0], color);
 }
+
+void triangle_fill(canvas& canvas, point a, point b, point c, color color) {
+    if (a.y > b.y) {
+        std::swap(a, b);
+    }
+    if (a.y > c.y) {
+        std::swap(a, c);
+    }
+    if (b.y > c.y) {
+        std::swap(b, c);
+    }
+
+    double start_x = a.x;
+    double end_x = a.x;
+    int y = a.y;
+    if (a.y != b.y) {
+        double dx1 = 1.0 * (b.x - start_x) / (b.y - y);
+        double dx2 = 1.0 * (c.x - start_x) / (c.y - y);
+        double start_dx = std::min(dx1, dx2);
+        double end_dx = std::max(dx1, dx2);
+        for (; y < std::min(b.y, c.y); ++y) {
+            for (int x = start_x; x <= end_x; ++x) {
+                canvas.set_pixel(x, y, color);
+            }
+            start_x += start_dx;
+            end_x += end_dx;
+        }
+    } else {
+        start_x = std::min(a.x, b.x);
+        end_x = std::max(a.x, b.x);
+    }
+
+    double start_dx = 1.0 * (c.x - start_x) / (c.y - y);
+    double end_dx = 1.0 * (c.x - end_x) / (c.y - y);
+
+    for (; y <= c.y; ++y) {
+        for (int x = start_x; x <= end_x; ++x) {
+            canvas.set_pixel(x, y, color);
+        }
+        start_x += start_dx;
+        end_x += end_dx;
+    }
+}
 }
 }

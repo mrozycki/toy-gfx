@@ -6,7 +6,8 @@ namespace gfx2d {
 canvas::canvas(std::size_t width, std::size_t height, color background)
     : width_(width)
     , height_(height)
-    , pixels_(width_ * height_, background) { }
+    , pixels_(width_ * height_, background)
+    , background_(background) { }
 
 void canvas::set_pixel(std::size_t x, std::size_t y, color c) {
     if (x >= 0 && x < width_ && y >= 0 && y < height_) {
@@ -16,6 +17,12 @@ void canvas::set_pixel(std::size_t x, std::size_t y, color c) {
 
 color canvas::get_pixel(std::size_t x, std::size_t y) const {
     return pixels_[y * width_ + x];
+}
+
+void canvas::clear() {
+    for (auto& pixel : pixels_) {
+        pixel = background_;
+    }
 }
 
 void print_to_file(canvas const& canvas, std::string const& filename) {

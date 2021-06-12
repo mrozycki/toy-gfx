@@ -14,6 +14,7 @@ public:
 
     void set_pixel(std::size_t x, std::size_t y, color c);
     color get_pixel(std::size_t x, std::size_t y) const;
+    void clear();
 
     std::size_t width() const { return width_; }
     std::size_t height() const { return height_; }
@@ -21,6 +22,7 @@ public:
 private:
     std::size_t width_, height_;
     std::vector<color> pixels_;
+    color background_;
 };
 
 void print_to_file(canvas const& canvas, std::string const& filename);

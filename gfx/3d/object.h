@@ -19,6 +19,8 @@ public:
     void render(gfx2d::canvas& canvas) const;
     void rotate_y(double alpha);
 
+    std::vector<face> const& faces() const { return faces_; }
+
 private:
     std::vector<face> faces_;
 };

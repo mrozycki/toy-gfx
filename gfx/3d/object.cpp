@@ -20,10 +20,10 @@ void rotate_y(point& p, double alpha) {
 
 void object::render(gfx2d::canvas& canvas) const {
     for (auto const& face : faces_) {
-        gfx2d::shapes::polygon(canvas, {
+        gfx2d::shapes::triangle_fill(canvas, 
             {static_cast<int>((face.a.x + 2) * 200), static_cast<int>((-face.a.y + 2) * 200)},
             {static_cast<int>((face.b.x + 2) * 200), static_cast<int>((-face.b.y + 2) * 200)},
-            {static_cast<int>((face.c.x + 2) * 200), static_cast<int>((-face.c.y + 2) * 200)}});
+            {static_cast<int>((face.c.x + 2) * 200), static_cast<int>((-face.c.y + 2) * 200)});
     }
 }
 
@@ -58,13 +58,14 @@ object load_from_obj(std::string const& filename) {
                     std::cerr << "Vertex out of bounds: " << vertex_index << "\n";
                 } else {
                     face_vertices.push_back(vertices[vertex_index - 1]);
-                    if (face_vertices.size() >= 3) {
-                        auto i = face_vertices.size() - 1;
-                        faces.push_back({face_vertices[i], face_vertices[i-1], face_vertices[i-2]});
-                    }
                 }
             }
-        } else if (type == "vn") {
+            if (face_vertices.size() != 3) {
+                std::cerr << "Unexpected number of face vertices: " << face_vertices.size() << "\n";
+                continue;
+            }
+            faces.push_back({face_vertices[0], face_vertices[1], face_vertices[2]});
+        } else if (type == "vn" || type == "vt") {
             // ignore for now
         } else {
             std::cerr << "Unknown entry type: " << type << "\n";
