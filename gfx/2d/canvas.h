@@ -4,13 +4,23 @@
 #include <string>
 
 namespace gfx2d {
-enum class color {
-    white, black
+struct color {
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
 };
+
+namespace colors {
+constexpr color WHITE{255, 255, 255};
+constexpr color BLACK{0, 0, 0};
+constexpr color RED{255, 0, 0};
+constexpr color GREEN{0, 255, 0};
+constexpr color BLUE{0, 0, 255};
+}
 
 class canvas {
 public:
-    canvas(std::size_t width, std::size_t height, color background = color::white);
+    canvas(std::size_t width, std::size_t height, color background = colors::WHITE);
 
     void set_pixel(std::size_t x, std::size_t y, color c);
     color get_pixel(std::size_t x, std::size_t y) const;

@@ -23,7 +23,8 @@ void object::render(gfx2d::canvas& canvas) const {
         gfx2d::shapes::triangle_fill(canvas, 
             {static_cast<int>((face.a.x + 2) * 200), static_cast<int>((-face.a.y + 2) * 200)},
             {static_cast<int>((face.b.x + 2) * 200), static_cast<int>((-face.b.y + 2) * 200)},
-            {static_cast<int>((face.c.x + 2) * 200), static_cast<int>((-face.c.y + 2) * 200)});
+            {static_cast<int>((face.c.x + 2) * 200), static_cast<int>((-face.c.y + 2) * 200)},
+        gfx2d::colors::RED);
     }
 }
 

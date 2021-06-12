@@ -11,7 +11,7 @@
 
 std::string create_filename(std::string const& prefix, int n) {
     std::stringstream ss;
-    ss << prefix << std::setw(4) << std::setfill('0') << n << ".pbm";
+    ss << prefix << std::setw(4) << std::setfill('0') << n << ".ppm";
     return ss.str();
 }
 
@@ -44,7 +44,7 @@ int main() {
     for (int i = 0; i < number_of_frames; ++i) {
         if (i % 10 == 9) std::cout << "." << std::flush;
         if (i % 100 == 99) std::cout << std::endl;
-        gfx2d::shapes::rectangle(canvas, 0, 0, 800, 800, gfx2d::color::white);
+        gfx2d::shapes::rectangle(canvas, 0, 0, 800, 800, gfx2d::color{0, 0, 128});
         auto rotated_object = object;
         rotated_object.rotate_y(6.28 / number_of_frames * i);
         rotated_object.render(canvas);

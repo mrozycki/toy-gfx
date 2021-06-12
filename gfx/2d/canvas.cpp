@@ -27,16 +27,12 @@ void canvas::clear() {
 
 void print_to_file(canvas const& canvas, std::string const& filename) {
     std::fstream file(filename, std::ios::out);
-    file << "P1 " << canvas.width() << " " << canvas.height() << "\n";
+    file << "P6 " << canvas.width() << " " << canvas.height() << " 255\n";
     for (auto y = 0; y < canvas.height(); ++y) {
         for (auto x = 0; x < canvas.width(); ++x) {
-            if (canvas.get_pixel(x, y) == color::white) {
-                file << "0 ";
-            } else {
-                file << "1 ";
-            }
+            auto const pixel = canvas.get_pixel(x, y);
+            file << pixel.red << pixel.green << pixel.blue;
         }
-        file << "\n";
     }
 }
 }
