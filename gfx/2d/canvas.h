@@ -8,6 +8,14 @@ struct color {
     uint8_t red;
     uint8_t green;
     uint8_t blue;
+
+    color dim(double factor) const {
+        return { 
+            static_cast<uint8_t>(red * factor), 
+            static_cast<uint8_t>(green * factor), 
+            static_cast<uint8_t>(blue * factor)
+        };
+    }
 };
 
 namespace colors {

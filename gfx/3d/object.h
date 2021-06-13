@@ -6,16 +6,29 @@
 #include "gfx/2d/canvas.h"
 
 namespace gfx3d {
-struct point {
+struct vec3d {
     double x, y, z;
-    
-    double distance() const {
-        return std::sqrt(x*x + y*y + z*z);
-    }
+
+    vec3d operator*(double x) const;
+    vec3d operator-(vec3d const& other) const;
+    vec3d operator-() const;
+    vec3d operator+(vec3d const& other) const;
+    double dot(vec3d const& other) const;
+    vec3d cross(vec3d const& other) const;
+    vec3d unit() const;
+    double magnitude() const;
+};
+
+struct vertex {
+    vec3d pos;
+    vec3d normal;
 };
 
 struct face {
-    point a, b, c;
+    vertex a, b, c;
+
+    vec3d normal() const;
+    vec3d centroid() const;
 };
 
 class object {
@@ -25,6 +38,7 @@ public:
         , radius_(radius) {}
 
     void render(gfx2d::canvas& canvas) const;
+    void render_wireframe(gfx2d::canvas& canvas) const;
     void rotate_y(double alpha);
 
     std::vector<face> const& faces() const { return faces_; }
