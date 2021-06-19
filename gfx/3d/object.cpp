@@ -19,11 +19,12 @@ void rotate_y(point& p, double alpha) {
 }
 
 void object::render(gfx2d::canvas& canvas) const {
+    double scale = 0.75 * std::min(canvas.width(), canvas.height()) / 2.0 / radius_;
     for (auto const& face : faces_) {
         gfx2d::shapes::triangle_fill(canvas, 
-            {static_cast<int>((face.a.x + 2) * 200), static_cast<int>((-face.a.y + 2) * 200)},
-            {static_cast<int>((face.b.x + 2) * 200), static_cast<int>((-face.b.y + 2) * 200)},
-            {static_cast<int>((face.c.x + 2) * 200), static_cast<int>((-face.c.y + 2) * 200)},
+            {static_cast<int>(face.a.x * scale + canvas.width()/2), static_cast<int>(-face.a.y * scale + canvas.height()/2)},
+            {static_cast<int>(face.b.x * scale + canvas.width()/2), static_cast<int>(-face.b.y * scale + canvas.height()/2)},
+            {static_cast<int>(face.c.x * scale + canvas.width()/2), static_cast<int>(-face.c.y * scale + canvas.height()/2)},
         gfx2d::colors::RED);
     }
 }
@@ -39,6 +40,7 @@ void object::rotate_y(double alpha) {
 object load_from_obj(std::string const& filename) {
     std::fstream file(filename);
     std::vector<point> vertices;
+    point furthest_point{0.0, 0.0, 0.0};
     std::vector<face> faces;
     std::string line;
     while (getline(file, line)) {
@@ -48,6 +50,9 @@ object load_from_obj(std::string const& filename) {
         if (type == "v") {
             point vertex;
             ss >> vertex.x >> vertex.y >> vertex.z;
+            if (vertex.distance() > furthest_point.distance()) {
+                furthest_point = vertex;
+            }
             vertices.push_back(vertex);
         } else if (type == "f") {
             std::string vertex;
@@ -72,6 +77,6 @@ object load_from_obj(std::string const& filename) {
             std::cerr << "Unknown entry type: " << type << "\n";
         }
     }
-    return object(std::move(faces));
+    return object(std::move(faces), furthest_point.distance());
 }
 }
