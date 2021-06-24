@@ -14,8 +14,11 @@
 namespace gfx3d {
 namespace {
 void rotate_y(vec3d& p, double alpha) {
-    p.x = cos(alpha) * p.x + sin(alpha) * p.z;
-    p.z = cos(alpha) * p.z - sin(alpha) * p.x;
+    auto new_x = cos(alpha) * p.x + sin(alpha) * p.z;
+    auto new_z = cos(alpha) * p.z - sin(alpha) * p.x;
+
+    p.x = new_x;
+    p.z = new_z;
 }
 }
 
@@ -68,7 +71,7 @@ vec3d face::centroid() const {
 
 void object::render(gfx2d::canvas& canvas) const {
     auto scale = 0.75 * std::min(canvas.width(), canvas.height()) / 2.0 / radius_;
-    vec3d const light{5, 5, 0};
+    vec3d const light{5, 5, -5};
     for (auto const& face : faces_) {
         auto const normal = face.normal();
         if (normal.z > 0) continue;
