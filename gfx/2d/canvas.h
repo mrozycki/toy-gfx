@@ -26,12 +26,18 @@ constexpr color GREEN{0, 255, 0};
 constexpr color BLUE{0, 0, 255};
 }
 
+struct pixel {
+    color c;
+    double depth;
+};
+
 class canvas {
 public:
     canvas(std::size_t width, std::size_t height, color background = colors::WHITE);
 
-    void set_pixel(std::size_t x, std::size_t y, color c);
-    color get_pixel(std::size_t x, std::size_t y) const;
+    void set_pixel(std::size_t x, std::size_t y, pixel c);
+    void set_color(std::size_t x, std::size_t y, color c);
+    pixel get_pixel(std::size_t x, std::size_t y) const;
     void clear();
 
     std::size_t width() const { return width_; }
@@ -39,7 +45,7 @@ public:
 
 private:
     std::size_t width_, height_;
-    std::vector<color> pixels_;
+    std::vector<pixel> pixels_;
     color background_;
 };
 

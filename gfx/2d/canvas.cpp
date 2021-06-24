@@ -6,22 +6,28 @@ namespace gfx2d {
 canvas::canvas(std::size_t width, std::size_t height, color background)
     : width_(width)
     , height_(height)
-    , pixels_(width_ * height_, background)
+    , pixels_(width_ * height_, {background, std::numeric_limits<double>::infinity()})
     , background_(background) { }
 
-void canvas::set_pixel(std::size_t x, std::size_t y, color c) {
-    if (x >= 0 && x < width_ && y >= 0 && y < height_) {
-        pixels_[y * width_ + x] = c;
+void canvas::set_pixel(std::size_t x, std::size_t y, pixel p) {
+    if (x >= 0 && x < width_ && y >= 0 && y < height_ && p.depth < get_pixel(x, y).depth) {
+        pixels_[y * width_ + x] = p;
     }
 }
 
-color canvas::get_pixel(std::size_t x, std::size_t y) const {
+void canvas::set_color(std::size_t x, std::size_t y, color c) {
+    if (x >= 0 && x < width_ && y >= 0 && y < height_) {
+        pixels_[y * width_ + x] = {c, std::numeric_limits<double>::infinity()};
+    }
+}
+
+pixel canvas::get_pixel(std::size_t x, std::size_t y) const {
     return pixels_[y * width_ + x];
 }
 
 void canvas::clear() {
     for (auto& pixel : pixels_) {
-        pixel = background_;
+        pixel = {background_, std::numeric_limits<double>::infinity()};
     }
 }
 
@@ -31,7 +37,7 @@ void print_to_file(canvas const& canvas, std::string const& filename) {
     for (auto y = 0; y < canvas.height(); ++y) {
         for (auto x = 0; x < canvas.width(); ++x) {
             auto const pixel = canvas.get_pixel(x, y);
-            file << pixel.red << pixel.green << pixel.blue;
+            file << pixel.c.red << pixel.c.green << pixel.c.blue;
         }
     }
 }

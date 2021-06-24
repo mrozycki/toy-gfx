@@ -29,14 +29,14 @@ int main(int argc, char** argv) {
             return 400;
         }
     }();
-    gfx2d::canvas canvas(canvas_size, canvas_size);
+    gfx2d::canvas canvas(canvas_size, canvas_size, gfx2d::color{0, 0, 128});
 
     auto object = gfx3d::load_from_obj(object_name + ".obj");
     const int number_of_frames = 200;
     for (int i = 0; i < number_of_frames; ++i) {
         if (i % 10 == 9) std::cout << "." << std::flush;
         if (i % 100 == 99) std::cout << std::endl;
-        gfx2d::shapes::rectangle(canvas, 0, 0, canvas_size, canvas_size, gfx2d::color{0, 0, 128});
+        canvas.clear();
         auto rotated_object = object;
         rotated_object.rotate_y(6.28 / number_of_frames * i);
         rotated_object.render(canvas);

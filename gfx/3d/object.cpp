@@ -74,13 +74,13 @@ void object::render(gfx2d::canvas& canvas) const {
     vec3d const light{5, 5, -5};
     for (auto const& face : faces_) {
         auto const normal = face.normal();
-        if (normal.z > 0) continue;
+        // TODO: add backface culling
         int c = std::max(0.0, 255 * normal.dot((light - face.centroid()).unit()));
         gfx2d::color color{static_cast<uint8_t>(c), 0, 0};
         gfx2d::shapes::triangle_fill(canvas, 
-            {static_cast<int>(face.a.pos.x * scale + canvas.width()/2), static_cast<int>(-face.a.pos.y * scale + canvas.height()/2)},
-            {static_cast<int>(face.b.pos.x * scale + canvas.width()/2), static_cast<int>(-face.b.pos.y * scale + canvas.height()/2)},
-            {static_cast<int>(face.c.pos.x * scale + canvas.width()/2), static_cast<int>(-face.c.pos.y * scale + canvas.height()/2)},
+            {static_cast<int>(face.a.pos.x * scale + canvas.width()/2), static_cast<int>(-face.a.pos.y * scale + canvas.height()/2), face.a.pos.z},
+            {static_cast<int>(face.b.pos.x * scale + canvas.width()/2), static_cast<int>(-face.b.pos.y * scale + canvas.height()/2), face.b.pos.z},
+            {static_cast<int>(face.c.pos.x * scale + canvas.width()/2), static_cast<int>(-face.c.pos.y * scale + canvas.height()/2), face.c.pos.z},
         color);
     }
 }
