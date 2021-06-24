@@ -29,7 +29,15 @@ int main(int argc, char** argv) {
             return 400;
         }
     }();
-    gfx2d::canvas canvas(canvas_size, canvas_size, gfx2d::color{0, 0, 128});
+    auto const aa_rate = [&] {
+        if (argc == 4) {
+            return std::atoi(argv[3]);
+        } else {
+            return 4;
+        }
+    }();
+    gfx2d::canvas canvas(canvas_size * aa_rate, canvas_size * aa_rate, gfx2d::color{0, 0, 128});
+    gfx2d::canvas aa_canvas(canvas_size, canvas_size);
 
     auto object = gfx3d::load_from_obj(object_name + ".obj");
     const int number_of_frames = 200;
@@ -40,7 +48,8 @@ int main(int argc, char** argv) {
         auto rotated_object = object;
         rotated_object.rotate_y(6.28 / number_of_frames * i);
         rotated_object.render(canvas);
-        print_to_file(canvas, create_filename("render/" + object_name + "/frame_", i));
+        canvas.subsample(aa_rate, aa_canvas);
+        print_to_file(aa_canvas, create_filename("render/" + object_name + "/frame_", i));
     }
 
     return 0;

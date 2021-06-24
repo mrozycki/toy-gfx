@@ -31,6 +31,27 @@ void canvas::clear() {
     }
 }
 
+void canvas::subsample(std::size_t rate, canvas& dest) const {
+    for (int y = 0; y < height_/rate; ++y) {
+        for (int x = 0; x < width_/rate; ++x) {
+            int r = 0, g = 0, b = 0;
+            for (int j = 0; j < rate; ++j) {
+                for (int i = 0; i < rate; ++i) {
+                    auto const color = get_pixel(x * rate + i, y * rate + j).c;
+                    r += color.red;
+                    g += color.green;
+                    b += color.blue;
+                }
+            }
+            dest.set_color(x, y, { 
+                static_cast<uint8_t>(r / rate / rate), 
+                static_cast<uint8_t>(g / rate / rate), 
+                static_cast<uint8_t>(b / rate / rate) 
+            });
+        }
+    }
+}
+
 void print_to_file(canvas const& canvas, std::string const& filename) {
     std::fstream file(filename, std::ios::out);
     file << "P6 " << canvas.width() << " " << canvas.height() << " 255\n";

@@ -43,6 +43,8 @@ public:
     std::size_t width() const { return width_; }
     std::size_t height() const { return height_; }
 
+    void subsample(std::size_t rate, canvas& dest) const;
+
 private:
     std::size_t width_, height_;
     std::vector<pixel> pixels_;

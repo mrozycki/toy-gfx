@@ -70,7 +70,7 @@ vec3d face::centroid() const {
 }
 
 void object::render(gfx2d::canvas& canvas) const {
-    auto scale = 0.75 * std::min(canvas.width(), canvas.height()) / 2.0 / radius_;
+    auto scale = 0.9 * std::min(canvas.width(), canvas.height()) / 2.0 / radius_;
     vec3d const light{5, 5, -5};
     for (auto const& face : faces_) {
         auto const normal = face.normal();
@@ -86,7 +86,7 @@ void object::render(gfx2d::canvas& canvas) const {
 }
 
 void object::render_wireframe(gfx2d::canvas& canvas) const {
-    auto scale = 0.75 * std::min(canvas.width(), canvas.height()) / 2.0 / radius_;
+    auto scale = 0.9 * std::min(canvas.width(), canvas.height()) / 2.0 / radius_;
     for (auto const& face : faces_) {
         gfx2d::shapes::polygon(canvas, {
             {static_cast<int>(face.a.pos.x * scale + canvas.width()/2), static_cast<int>(-face.a.pos.y * scale + canvas.height()/2)},
